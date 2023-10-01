@@ -36,160 +36,13 @@ let devicesPush = document.querySelector(".devicesPush");
 let containPushButtons = document.getElementById("containPushButtons");
 let NameOfDevice = document.querySelector(".NameOfDevice");
 let contentDevices = document.querySelector(".contentDevices");
-let addDevice = document.querySelector(".addDevice");
+
 let closecontentdevices = document.querySelector(".closecontentdevices");
-let addNewDevice = document.querySelector(".addNewDevice");
+
 let body = document.querySelector("body");
-let modal = document.querySelector("modal");
-
-// button open Form add New Device in this Room
-addDevice.addEventListener("click", () => {
-  contentDevices.style.transform = "scale(1)";
-});
-
-// button close Form
-closecontentdevices.addEventListener("click", () => {
-  contentDevices.style.transform = "scale(0)";
-});
-
-addNewDevice.addEventListener("click", () => {
-  // close form after adding new device
-  contentDevices.style.transform = "scale(0)";
-
-  // Call data from realtime
-  let roomsRef = firebase.database().ref("Rooms");
-  // if checkbox not Checked ====> : Normal device without bushing
-
-  if (!containPushButtons.checked) {
-    roomsRef
-      .orderByChild("Name")
-      .equalTo(currentName)
-      .once("value")
-      .then((snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          const devicesArray = childSnapshot.val().devices || [];
-          const newDevice = {
-            Name: currentName+NameOfDevice.value,
-            status: 0,
-          };
-          const deviceExists = devicesArray.some(
-            (device) => device.Name === newDevice.Name
-          );
-          if (deviceExists) {
-            // this message will speech after adding New Device in Room
-            let welcomeMessage = new SpeechSynthesisUtterance(
-              "This device already exists"
-            );
-            let speech = window.speechSynthesis;
-            welcomeMessage.rate = 0.7;
-            speech.speak(welcomeMessage);
-            alert("This device already exists");
-
-          } else {
-            devicesArray.push(newDevice);
-            childSnapshot.ref.update({ devices: devicesArray }).then(() => {
-              console.log("تم إضافة الجهاز بنجاح!");
-              // this message will speech after adding New Device in Room
-              let welcomeMessage = new SpeechSynthesisUtterance(
-                "A new device has been added to the room"
-              );
-              let speech = window.speechSynthesis;
-              welcomeMessage.rate = 0.7;
-              speech.speak(welcomeMessage);
-            });
-          }
-        });
-      })
-      .catch((error) => {
-        console.error("حدث خطأ أثناء إضافة الجهاز الجديد:", error);
-      });
-
-      
-  } else {
-    roomsRef
-      .orderByChild("Name")
-      .equalTo(currentName)
-      .once("value")
-      .then((snapshot) => {
-        snapshot.forEach((childSnapshot) => {
-          const devicesArray = childSnapshot.val().devicesPush || [];
-          const newDevice = {
-            Name: currentName+"Push"+NameOfDevice.value,
-            status: 0,
-          };
-          const deviceExists = devicesArray.some(
-            (device) => device.Name === newDevice.Name
-          );
-          if (deviceExists) {
-          // this message will speech after adding New Device in Room
-          let welcomeMessage = new SpeechSynthesisUtterance(
-            "This device already exists"
-          );
-          let speech = window.speechSynthesis;
-          welcomeMessage.rate = 0.7;
-          speech.speak(welcomeMessage);
-          alert("This device already exists");
-          } else {
-            devicesArray.push(newDevice);
-            childSnapshot.ref.update({ devicesPush: devicesArray }).then(() => {
-              console.log("تم إضافة الجهاز بنجاح!");
-                // this message will speech after adding New Device in Room
-                let welcomeMessage = new SpeechSynthesisUtterance(
-                  "A new device has been added to the room"
-                );
-                let speech = window.speechSynthesis;
-                welcomeMessage.rate = 0.7;
-                speech.speak(welcomeMessage);
-            });
-          }
-        });
-      })
-      .catch((error) => {
-        console.error("حدث خطأ أثناء إضافة الجهاز الجديد:", error);
-      });
 
 
-  }
 
-});
-
-// View stored data from realtime Database ( Normal devices without bushing )
-// function DisplayDevices() {
-//   const roomsRef = firebase.database().ref("Rooms");
-//   roomsRef
-//     .orderByChild("Name")
-//     .equalTo(currentName)
-//     .on(
-//       "value",
-//       (snapshot) => {
-//         devices.innerHTML = "";
-//         snapshot.forEach((childSnapshot) => {
-//           const devicesArray = childSnapshot.val().devices || [];
-//           devicesArray.forEach((device, i) => {
-//             let card = `<div class="card border-0 p-2">
-//             <span style="opacity:0">${i}</span>
-//             <p class="nameOfDevice">${device.Name}</p>
-//             <i class="fa-solid fa-trash-can deletbtnDevice"></i>
-            
-//             <div class="container">
-//               <button class="on btn btn-primary">ON</button>
-//               <button class="off btn btn-danger">OFF</button>
-
-
-//               <span style="opacity:0">${device.Name}</span>
-//             </div>
-      
-//             <span style="opacity:0">${childSnapshot.key}</span>
-//           </div>`;
-//             devices.innerHTML += card;
-//           });
-//         });
-//       },
-//       (error) => {
-//         console.error("حدث خطأ أثناء قراءة الأجهزة:", error);
-//       }
-//     );
-// }
 
 function DisplayDevices() {
   const roomsRef = firebase.database().ref("Rooms");
@@ -211,7 +64,7 @@ function DisplayDevices() {
             let card = `<div class="card border-0 p-2">
             <span style="opacity:0">${i}</span>
             <p class="nameOfDevice">${device.Name}</p>
-           
+      
             <div class="container">
               <button class="toggle btn ${buttonStyle}" data-room-key="${childSnapshot.key}" data-device-index="${i}">${buttonText}</button>
               <span style="opacity:0">${device.Name}</span>
@@ -272,7 +125,7 @@ function DisplayPushDevices() {
             let card = `<div class="card border-0 p-2">
             <span style="opacity:0">${i}</span>
             <p class="nameOfDevice">${device.Name}</p>
-         
+
             <div class="container">
               <button class="push btn ${buttonStylePush}" data-room-key="${childSnapshot.key}" data-device-index="${i}">Push</button>
             </div>
@@ -408,7 +261,3 @@ window.onload = () => {
   DisplayDevices();
   DisplayPushDevices();
 }
-
-
-
-
