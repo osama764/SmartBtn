@@ -65,14 +65,12 @@ h1 {
 
 .devices .card ,.devicesPush .card{
   width: 15%;
-  position: relative;
+
 
 }
 
 .devices .card p ,.devicesPush .card p{
-position: absolute;
-top: 5px;
-right:  15px;
+
   font-size: 14px !important;
 }
 .card {
@@ -386,9 +384,7 @@ font-size: 22px;
   }
   .devices .card p,.devicesPush .card p{
     font-size: 11px !important;
-    position: absolute;
-top: 8px;
-right: 3px;
+
   }
   .card img{
     width: 90px;
@@ -610,9 +606,7 @@ font-size: 22px;
   }
   .devices .card p,.devicesPush .card p{
     font-size: 11px !important;
-    position: absolute;
-top: 8px;
-right: 3px;
+
   }
   .card img{
     width: 90px;
