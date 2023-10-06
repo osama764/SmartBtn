@@ -51,10 +51,7 @@ h1 {
   margin: 0 auto;
 }
 .addDevice {
-  position: absolute;
-  left: 92%;
-  bottom: -3% !important;
-  z-index: 666666666;
+  display: none;
 }
 
 
@@ -362,11 +359,7 @@ display: none;
   }
 
   .addDevice {
-    position: fixed;
-    left: 85%;
-    bottom: 15% !important;
-    z-index: 999999;
-  width: 40px;
+  display: none;
   }
 
   .title-devices{
@@ -585,10 +578,7 @@ display: none;
   }
 
   .addDevice {
-    position: fixed;
-    left: 85%;
-    bottom: 25% !important;
-    z-index: 999999;
+    display: none;
   
   }
   .title-devices{
